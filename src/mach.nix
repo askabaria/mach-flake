@@ -119,7 +119,7 @@ with lib;
       generate mach-engine-project mach "$rev" > templates/engine/build.zig.zon
 
       rm -rf templates/core/src
-      cp -rf "$tmpdir"/mach/examples/core/triangle templates/core/src
+      cp -rf "$tmpdir"/mach/examples/core-triangle templates/core/src
       git add templates/core/src
       generate mach-core-project mach "$rev" > templates/core/build.zig.zon
 
@@ -133,7 +133,7 @@ with lib;
 
     nix run .#mach.update-zig-versions > versions.json
     nix run .#mach.update-flakes -- force
-    for var in engine core; do
+    for var in core; do
       (cd templates/"$var"; nix run --override-input mach ../.. .#zon2json-lock)
       # Call using nix run because update-versions may change the mach nominated zig version
       nix run .#autofix -- templates/"$var"
